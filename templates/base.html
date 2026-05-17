@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}DataSite{% endblock %}</title>
+<meta name="description" content="Платформа для завантаження та аналізу рекламних даних">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+<nav class="navbar">
+  <span class="navbar-brand">📊 DataSite</span>
+  <ul class="navbar-nav">
+    <li><a href="{% url 'dashboard' %}" class="{% block nav_dashboard %}{% endblock %}">Головна</a></li>
+    <li><a href="{% url 'upload' %}" class="{% block nav_upload %}{% endblock %}">Завантажити</a></li>
+    <li><a href="{% url 'stats' %}" class="{% block nav_stats %}{% endblock %}">Статистика</a></li>
+    {% if user.profile.is_admin %}
+    <li><a href="{% url 'admin_panel' %}" class="{% block nav_admin %}{% endblock %}">Адмін панель</a></li>
+    {% endif %}
+    <li><a href="{% url 'logout' %}">Вийти ({{ user.email|truncatechars:20 }})</a></li>
+  </ul>
+</nav>
+{% endif %}
+{% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Вхід — DataSite{% endblock %}
+{% block content %}
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">📊 DataSite</div>
+    <div class="login-subtitle">Увійдіть до свого акаунту</div>
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+      <span>⚠</span> {{ message }}
+    </div>
+    {% endfor %}
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-input" placeholder="your@email.com" required autofocus value="{{ form.email.value|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Пароль</label>
+        <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-full" style="justify-content:center;margin-top:0.5rem">Увійти</button>
+    </form>
+    <div class="divider"></div>
+    <p class="text-center text-muted">Немає акаунту? <a href="{% url 'register' %}">Зареєструватися</a></p>
+  </div>
+</div>
+{% endblock %}
