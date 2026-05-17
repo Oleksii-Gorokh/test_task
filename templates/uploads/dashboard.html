@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Головна — DataSite{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header" style="margin-top:1rem">
+    <h1 class="page-title">Вітаємо, {{ user.email }} 👋</h1>
+    <p class="page-subtitle">Платформа для аналізу рекламних даних</p>
+  </div>
+  <div class="grid-3 mb-4">
+    <a href="{% url 'upload' %}" style="text-decoration:none">
+      <div class="stat-card" style="cursor:pointer">
+        <span style="font-size:2rem">📤</span>
+        <div class="stat-label">Завантажити файл</div>
+        <div style="font-size:0.8rem;color:var(--muted)">XLS, XLSX або CSV</div>
+      </div>
+    </a>
+    <a href="{% url 'stats' %}" style="text-decoration:none">
+      <div class="stat-card" style="cursor:pointer">
+        <span style="font-size:2rem">📊</span>
+        <div class="stat-label">Статистика по роках</div>
+        <div style="font-size:0.8rem;color:var(--muted)">Агреговані показники</div>
+      </div>
+    </a>
+    {% if user.profile.is_admin %}
+    <a href="{% url 'admin_panel' %}" style="text-decoration:none">
+      <div class="stat-card" style="cursor:pointer">
+        <span style="font-size:2rem">⚙️</span>
+        <div class="stat-label">Адмін панель</div>
+        <div style="font-size:0.8rem;color:var(--muted)">Управління системою</div>
+      </div>
+    </a>
+    {% else %}
+    <div class="stat-card">
+      <span style="font-size:2rem">👤</span>
+      <div class="stat-label">Ваш рівень</div>
+      <div><span class="badge badge-user">Користувач</span></div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="card">
+    <h2 style="font-size:1rem;font-weight:600;margin-bottom:0.75rem">Як це працює</h2>
+    <ol style="padding-left:1.2rem;color:var(--muted);font-size:0.875rem;line-height:2">
+      <li>Завантажте XLS/XLSX/CSV файл у форматі шаблону (колонки: Advertiser, Brand, Start, End, Format, Platform, Impr)</li>
+      <li>Система автоматично обробить дані та збереже їх у базу даних</li>
+      <li>Перейдіть у розділ "Статистика" для перегляду агрегованих результатів по роках</li>
+    </ol>
+  </div>
+</div>
+{% endblock %}

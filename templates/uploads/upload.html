@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Завантаження файлу — DataSite{% endblock %}
+{% block nav_upload %}active{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header" style="margin-top:1rem">
+    <h1 class="page-title">Завантаження файлу</h1>
+    <p class="page-subtitle">Підтримуються формати XLS, XLSX та CSV</p>
+  </div>
+  {% for message in messages %}
+  <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}" style="margin-bottom:1.5rem">
+    {% if message.tags == 'error' %}<span>✕</span>{% else %}<span>✓</span>{% endif %}
+    <div>
+      <strong>{% if message.tags == 'error' %}Помилка завантаження{% else %}Успішно{% endif %}</strong><br>
+      <span style="opacity:0.85">{{ message }}</span>
+    </div>
+  </div>
+  {% endfor %}
+  <div class="card">
+    <form method="post" enctype="multipart/form-data" id="upload-form">
+      {% csrf_token %}
+      <div class="upload-zone" id="drop-zone">
+        <input type="file" name="file" id="file-input" accept=".xls,.xlsx,.csv" required>
+        <span class="upload-icon">📂</span>
+        <div class="upload-title" id="file-label">Перетягніть файл або натисніть для вибору</div>
+        <div class="upload-hint">Підтримувані формати: .xls, .xlsx, .csv</div>
+      </div>
+      <div style="margin-top:1.5rem;display:flex;gap:1rem;align-items:center">
+        <button type="submit" class="btn btn-primary" id="submit-btn">📤 Завантажити</button>
+        <span id="file-name" style="color:var(--muted);font-size:0.85rem"></span>
+      </div>
+    </form>
+  </div>
+  <div class="card" style="margin-top:1.5rem">
+    <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:1rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">Формат шаблону</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Advertiser</th><th>Brand</th><th>Start</th><th>End</th><th>Format</th><th>Platform</th><th>Impr</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--muted)">Назва рекламодавця</td>
+            <td style="color:var(--muted)">Бренд</td>
+            <td style="color:var(--muted)">2021-01-04</td>
+            <td style="color:var(--muted)">2021-01-10</td>
+            <td style="color:var(--muted)">banner</td>
+            <td style="color:var(--muted)">DV360</td>
+            <td style="color:var(--muted)">14731090</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:0.75rem;font-size:0.8rem;color:var(--muted)">
+      ⚠ Порядок колонок може бути довільним — система автоматично їх визначить.
+    </p>
+  </div>
+</div>
+<script>
+const input = document.getElementById('file-input');
+const label = document.getElementById('file-label');
+const nameSpan = document.getElementById('file-name');
+const dropZone = document.getElementById('drop-zone');
+input.addEventListener('change', () => {
+  if (input.files.length) {
+    const n = input.files[0].name;
+    label.textContent = n;
+    nameSpan.textContent = 'Обраний файл: ' + n;
+  }
+});
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  if (e.dataTransfer.files.length) {
+    input.files = e.dataTransfer.files;
+    label.textContent = e.dataTransfer.files[0].name;
+    nameSpan.textContent = 'Обраний файл: ' + e.dataTransfer.files[0].name;
+  }
+});
+</script>
+{% endblock %}
