@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Повні дані — DataSite{% endblock %}
+{% block nav_admin %}active{% endblock %}
+{% block content %}
+<div class="sidebar-layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Адмін</div>
+    <a href="{% url 'admin_panel' %}" class="sidebar-link">⊞ Огляд</a>
+    <a href="{% url 'file_logs' %}" class="sidebar-link">📋 Логи файлів</a>
+    <a href="{% url 'access_status' %}" class="sidebar-link">👥 Доступи</a>
+    <a href="{% url 'full_data' %}" class="sidebar-link active">🗄 Всі дані</a>
+  </aside>
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Повна таблиця даних</h1>
+      <p class="page-subtitle">Всі завантажені записи — {{ records|length }} шт.</p>
+    </div>
+    {% if records %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Advertiser</th>
+            <th>Brand</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Format</th>
+            <th>Platform</th>
+            <th>Impr</th>
+            <th>Рік</th>
+            <th>Завантажено</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rec in records %}
+          <tr>
+            <td style="color:var(--muted)">{{ forloop.counter }}</td>
+            <td>{{ rec.advertiser }}</td>
+            <td>{{ rec.brand }}</td>
+            <td style="white-space:nowrap;color:var(--muted)">{{ rec.start_date|default:"—" }}</td>
+            <td style="white-space:nowrap;color:var(--muted)">{{ rec.end_date|default:"—" }}</td>
+            <td>{{ rec.format }}</td>
+            <td>{{ rec.platform }}</td>
+            <td class="num">{{ rec.impr|floatformat:0 }}</td>
+            <td>{% if rec.year %}<span class="badge badge-user">{{ rec.year }}</span>{% else %}—{% endif %}</td>
+            <td style="color:var(--muted);font-size:0.8rem">{{ rec.uploaded_by.email|truncatechars:20 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="card">
+      <div class="empty-state">
+        <div class="empty-state-icon">🗄</div>
+        <p class="empty-state-text">Дані відсутні</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

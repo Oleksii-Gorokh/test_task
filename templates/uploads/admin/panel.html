@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Адмін панель — DataSite{% endblock %}
+{% block nav_admin %}active{% endblock %}
+{% block content %}
+<div class="sidebar-layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Адмін</div>
+    <a href="{% url 'admin_panel' %}" class="sidebar-link active">⊞ Огляд</a>
+    <a href="{% url 'file_logs' %}" class="sidebar-link">📋 Логи файлів</a>
+    <a href="{% url 'access_status' %}" class="sidebar-link">👥 Доступи</a>
+    <a href="{% url 'full_data' %}" class="sidebar-link">🗄 Всі дані</a>
+  </aside>
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Адмін панель</h1>
+      <p class="page-subtitle">Огляд системи</p>
+    </div>
+    <div class="grid-4 mb-4">
+      <div class="stat-card">
+        <div class="stat-label">Всього файлів</div>
+        <div class="stat-value">{{ total_files }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Записів в БД</div>
+        <div class="stat-value">{{ total_records }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Користувачів</div>
+        <div class="stat-value">{{ total_users }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Помилок</div>
+        <div class="stat-value" style="-webkit-text-fill-color:#ef4444;color:#ef4444">{{ errors }}</div>
+      </div>
+    </div>
+    <div class="grid-3">
+      <a href="{% url 'file_logs' %}" style="text-decoration:none">
+        <div class="card" style="cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">📋</div>
+          <strong>Логи файлів</strong>
+          <p style="color:var(--muted);font-size:0.8rem;margin-top:0.25rem">Email, назва, дата, статус, помилка</p>
+        </div>
+      </a>
+      <a href="{% url 'access_status' %}" style="text-decoration:none">
+        <div class="card" style="cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">👥</div>
+          <strong>Статус доступів</strong>
+          <p style="color:var(--muted);font-size:0.8rem;margin-top:0.25rem">Email, дата, рівень доступу</p>
+        </div>
+      </a>
+      <a href="{% url 'full_data' %}" style="text-decoration:none">
+        <div class="card" style="cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:1.5rem;margin-bottom:0.5rem">🗄</div>
+          <strong>Повна таблиця даних</strong>
+          <p style="color:var(--muted);font-size:0.8rem;margin-top:0.25rem">Всі завантажені записи</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

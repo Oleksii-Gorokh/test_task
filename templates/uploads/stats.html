@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Статистика — DataSite{% endblock %}
+{% block nav_stats %}active{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header" style="margin-top:1rem">
+    <h1 class="page-title">Статистика по роках</h1>
+    <p class="page-subtitle">Сумарні показники показів (Impr) за роками</p>
+  </div>
+  {% if stats %}
+  <div class="grid-4 mb-4">
+    {% for row in stats %}
+    <div class="stat-card">
+      <div class="stat-label">{{ row.year }} рік</div>
+      <div class="stat-value">{{ row.total_impr|floatformat:0 }}</div>
+      <div style="font-size:0.75rem;color:var(--muted)">показів (Impr)</div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="card">
+    <h2 style="font-size:1rem;font-weight:600;margin-bottom:1rem">Детальна таблиця по роках</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Рік</th>
+            <th>Сумарні покази (Impr)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in stats %}
+          <tr>
+            <td style="color:var(--muted)">{{ forloop.counter }}</td>
+            <td><strong>{{ row.year }}</strong></td>
+            <td class="num accent-text">{{ row.total_impr|floatformat:0 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div class="card">
+    <div class="empty-state">
+      <div class="empty-state-icon">📭</div>
+      <p class="empty-state-text">Дані відсутні. <a href="{% url 'upload' %}">Завантажте файл</a>, щоб побачити статистику.</p>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

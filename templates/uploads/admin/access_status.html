@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Статус доступів — DataSite{% endblock %}
+{% block nav_admin %}active{% endblock %}
+{% block content %}
+<div class="sidebar-layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Адмін</div>
+    <a href="{% url 'admin_panel' %}" class="sidebar-link">⊞ Огляд</a>
+    <a href="{% url 'file_logs' %}" class="sidebar-link">📋 Логи файлів</a>
+    <a href="{% url 'access_status' %}" class="sidebar-link active">👥 Доступи</a>
+    <a href="{% url 'full_data' %}" class="sidebar-link">🗄 Всі дані</a>
+  </aside>
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Статус доступів</h1>
+      <p class="page-subtitle">Всі зареєстровані користувачі та їх рівні</p>
+    </div>
+    {% if profiles %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Email користувача</th>
+            <th>Дата реєстрації</th>
+            <th>Рівень доступу</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for profile in profiles %}
+          <tr>
+            <td style="color:var(--muted)">{{ forloop.counter }}</td>
+            <td>{{ profile.user.email }}</td>
+            <td style="color:var(--muted);white-space:nowrap">{{ profile.created_at|date:"d.m.Y H:i" }}</td>
+            <td>
+              {% if profile.role == 'admin' %}
+              <span class="badge badge-admin">⚙ Адмін</span>
+              {% else %}
+              <span class="badge badge-user">👤 Користувач</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="card">
+      <div class="empty-state">
+        <div class="empty-state-icon">👥</div>
+        <p class="empty-state-text">Користувачів ще немає</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

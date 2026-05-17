@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Логи файлів — DataSite{% endblock %}
+{% block nav_admin %}active{% endblock %}
+{% block content %}
+<div class="sidebar-layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Адмін</div>
+    <a href="{% url 'admin_panel' %}" class="sidebar-link">⊞ Огляд</a>
+    <a href="{% url 'file_logs' %}" class="sidebar-link active">📋 Логи файлів</a>
+    <a href="{% url 'access_status' %}" class="sidebar-link">👥 Доступи</a>
+    <a href="{% url 'full_data' %}" class="sidebar-link">🗄 Всі дані</a>
+  </aside>
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Логи файлів</h1>
+      <p class="page-subtitle">Статус завантаження всіх файлів</p>
+    </div>
+    {% if logs %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Email користувача</th>
+            <th>Назва файлу</th>
+            <th>Дата завантаження</th>
+            <th>Статус</th>
+            <th>Тип помилки</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in logs %}
+          <tr>
+            <td style="color:var(--muted)">{{ forloop.counter }}</td>
+            <td>{{ log.user.email }}</td>
+            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ log.filename }}">{{ log.filename }}</td>
+            <td style="color:var(--muted);white-space:nowrap">{{ log.uploaded_at|date:"d.m.Y H:i" }}</td>
+            <td>
+              {% if log.status == 'success' %}
+              <span class="badge badge-success">✓ Успішно</span>
+              {% else %}
+              <span class="badge badge-error">✕ Помилка</span>
+              {% endif %}
+            </td>
+            <td style="color:var(--error);font-size:0.8rem;max-width:250px">
+              {{ log.error_type|default:"—" }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="card">
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <p class="empty-state-text">Логи відсутні</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
